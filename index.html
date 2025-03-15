@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>1v1 LOL - topVAZ #3</title>
+    <meta name="robots" content="noindex,nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="description" content="Discover 1v1, the online building simulator & third person shooting game. Battle royale, build fight, box fight, zone wars and more game modes to enjoy!">
+    <meta name="keywords" content="just,build,simulator,practice,free,online,battle,royale">
+    <link rel="icon" type="image/png" href="favicon.png?v2">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/steven184/steven184.github.io@main/1v1-lol-3/css/style.css">
+    <script src="https://cdn.jsdelivr.net/gh/steven184/steven184.github.io@main/1v1-lol-3/lib/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/steven184/steven184.github.io@main/1v1-lol-3/js/IronSourceRV.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/steven184/steven184.github.io@main/1v1-lol-3/js/mobileRedirect.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/steven184/steven184.github.io@main/1v1-lol-3/js/fullscreen.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/steven184/steven184.github.io@main/1v1-lol-3/js/sdkloader/ima3.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/steven184/steven184.github.io@main/1v1-lol-3/UnityLoader.js"></script>
+    <script>
+        var gameInstance;
+
+        window.onload = function () {
+            gameInstance = UnityLoader.instantiate("gameContainer", "https://cdn.jsdelivr.net/gh/steven184/steven184.github.io@main/1v1-lol-3/WebGL.json", {
+                onProgress: UnityProgress,
+                Module: {
+                    onRuntimeInitialized: function () {
+                        UnityProgress(gameInstance, "complete");
+                    },
+                },
+            });
+        };
+
+        var gameLoaded = false;
+        window.addEventListener("beforeunload", function (e) {
+            if (adsVisible || !gameLoaded || !lockedOccured) return null;
+            var confirmationMessage = "Are you sure you want to leave? ";
+            (e || window.event).returnValue = confirmationMessage; //Gecko + IE
+            return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
+        });
+        window.alert = function (e) {
+            console.log(e);
+        };
+    </script>
+</head>
+<body>
+    <div class="ads">
+        <div class="ad-smallscreen">
+            <div class="ad ad-rectangle-bottom"></div>
+        </div>
+        <div class="ad ad-rectangle-upper" id="adRectangleUpper"></div>
+        <div class="ad-largescreen">
+            <div class="ad ad-leaderboard-bottom"></div>
+        </div>
+    </div>
+    <div id="gameContainer" style="width: 100%; height: 100%; margin: auto;"></div>
+    <div id="loader">
+        <img class="logo" src="https://cdn.jsdelivr.net/gh/steven184/steven184.github.io@main/1v1-lol-3/logo.png">
+        <div class="spinner"></div>
+        <div class="progress">
+            <div class="full"></div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/gh/steven184/steven184.github.io@main/1v1-lol-3/firebase/firebase-app.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/steven184/steven184.github.io@main/1v1-lol-3/firebase/firebase-analytics.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/steven184/steven184.github.io@main/1v1-lol-3/firebase/firebase-auth.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/steven184/steven184.github.io@main/1v1-lol-3/firebase/firebase-firestore.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/steven184/steven184.github.io@main/1v1-lol-3/firebase/firebase-remote-config.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/steven184/steven184.github.io@main/1v1-lol-3/js/firebase.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/steven184/steven184.github.io@main/1v1-lol-3/js/login.js?v=147"></script>
+    <script src="https://cdn.jsdelivr.net/gh/steven184/steven184.github.io@main/1v1-lol-3/js/firebase-config.js?v=147"></script>
+    <script>
+        initializeFireBase();
+
+        function showAds() {
+            console.log("show ads");
+        }
+        function requestNewAd() {
+            unityAdFinishedCallback();
+        }
+        function unityAdFinishedCallback() {
+            try {
+                if (gameInstance) gameInstance.SendMessage("AdsManager", "OnWebCallback");
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    </script>
+</body>
+</html>
